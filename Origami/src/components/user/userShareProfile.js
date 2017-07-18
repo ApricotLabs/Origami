@@ -1,14 +1,16 @@
 import React, { PropTypes } from "react";
-import HomePageDemoCard from "../stateless/homePageDemoCard";
 import { getAllPermalink } from "../../api/Nongh/permalink";
 import { getDeployed } from "../../api/Nongh/getDeployed";
 import { is_cloudcv } from "../../api/Generic/getCloudCVDemos";
 import userApi from "../../api/Github/userApi";
-import RaisedButton from "material-ui/RaisedButton";
-import { indigo600, grey900, blue100 } from "material-ui/styles/colors";
+import { indigo600 } from "material-ui/styles/colors";
 import Dialog from "material-ui/Dialog";
 import toastr from "toastr";
 import { ShareButtons, ShareCounts, generateShareIcon } from "react-share";
+import { Layout, Menu, Icon, Dropdown, Button, Card, Row, Col } from 'antd';
+const { Header, Content, Footer, Sider } = Layout;
+import { Input } from 'antd';
+const Search = Input.Search;
 
 const {
   FacebookShareButton,
@@ -96,185 +98,55 @@ class ShareProfile extends React.Component {
 
   render() {
     return (
-      <div
-        className="sixteen column stretched row"
-        style={{ visibility: this.state.showOutput }}
-      >
-
-        <div className="ui container row" style={{ height: "10vh" }} />
-
-        <div className="ui container row grid">
-          <div
-            className="ui four wide right aligned column"
-            style={{ minHeight: "15vh" }}
-          >
-            <div className="ui fluid bottom aligned medium rounded image">
-              <div className="ui medium ribbon black label">
-                @{this.state.user.login}
-              </div>
-              <img
-                className=""
-                onLoad={this.toggleShow}
-                src={this.state.user.avatar_url}
-              />
-            </div>
-          </div>
-
-          <div className="ui six wide column">
-            <div>
-              <div className="row" style={{}} />
-              <h1 className="row"><u>{this.state.user.name}</u></h1>
-              {this.state.user.company &&
-                <h3 className="row">{this.state.user.company}</h3>}
-              {this.state.user.blog &&
-                <a href={this.state.user.blog}>
-                  {" "}<h3 className="row">{this.state.user.blog}</h3>
-                </a>}
-              <h3 className="row">
-                Github Follower Count: {this.state.user.followers}
-              </h3>
-              <h3 className="row">
-                Number of Apps: {this.state.allDeployed.length}
-              </h3>
-            </div>
-          </div>
-        </div>
-
-        <span className="ui horizontal divider row"><hr /></span>
-
+       <Layout style={{background: '#FEFEFE'}}>
+    <Header style={{ background: '#FEFEFE', padding: 0, 'box-shadow': '0px 2px 5px #E0E0E0'}} >
+      <Row >
+        <Col span={23} offset={1}>
+          <h1>
+            Public Profile
+          </h1>
+        </Col>
+      </Row>  
+    </Header>
+    <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+      {this.state.user &&
+      <div style={{ padding: 12, background: '#FEFEFE', textAlign: 'center' }}>
         {this.state.allDeployed.length > 0 &&
-          <div
-            className="fifteen wide column stretched stackable centered container"
-          >
-            <div className="ui very padded stackable centered grid">
-              {this.state.allDeployed.map((demo, index) => (
-                <HomePageDemoCard
-                  key={index}
-                  {...demo}
-                  handleShareModal={this.handleShareModal}
-                />
-              ))}
-            </div>
-          </div>}
-
-        {this.state.allDeployed.length > 0 &&
-          <div className="ui centered row container grid">
-
-            <div
-              className="ui fluid row"
-              style={{ minHeight: "10vh", minWidth: "100vw" }}
-            />
-
-            <div
-              className="ui fluid row"
-              style={{
-                minHeight: "5vh",
-                backgroundColor: grey900,
-                color: "white",
-                minWidth: "100vw"
-              }}
-            />
-
-            <div
-              className="ui fluid container grid row"
-              style={{
-                minHeight: "20vh",
-                backgroundColor: grey900,
-                color: "white",
-                minWidth: "100vw"
-              }}
-            >
-              <div className="ui six wide column">
-                <h4 className="ui inverted header">Community</h4>
-                <div className="ui inverted link list">
-                  <a
-                    className="item"
-                    href="https://github.com/Cloud-CV/cvfy-frontend/issues"
-                    target="_blank"
-                  >
-                    Submit an Issue
-                  </a>
-                  <a
-                    className="item"
-                    href="https://gitter.im/batra-mlp-lab/CloudCV"
-                    target="_blank"
-                  >
-                    Join our Chat
-                  </a>
-                </div>
+        <Row>
+          {this.state.allDeployed.map(demo => (
+          <Col span={5} offset={1} key={demo.id}>
+            <Card style={{ width: '100%', background: '#FAFAFA' }} bodyStyle={{ padding: 0 }}>
+              <div className="custom-card">
+                <br/>
+                <h3>{demo.name}</h3>
               </div>
-              <div className="ui ten wide column grid">
-                <div className="ui row">
-
-                  <div className="eight wide right floated column">
-                    <h4
-                      className="ui inverted header"
-                      style={{ color: blue100 }}
-                    >
-                      Contribute to this project
-                    </h4>
-                    <p>We are looking for people to add features to CVFY.</p>
-                    <RaisedButton
-                      backgroundColor={blue100}
-                      label="Github"
-                      onClick={() =>
-                        location.href = "https://github.com/Cloud-CV/cvfy-frontend"}
-                    />
-                  </div>
-
-                  <div className="eight wide right floated column">
-                    <h4
-                      className="ui inverted header"
-                      style={{ color: blue100 }}
-                    >
-                      Know more about CloudCV
-                    </h4>
-                    <p>
-                      CloudCV provides large-scale distributed Computer Vision as a cloud service.
-                    </p>
-                    <RaisedButton
-                      backgroundColor={blue100}
-                      label="Visit cloudcv.org"
-                      onClick={() => location.href = "https://cloudcv.org"}
-                    />
-                  </div>
-
-                </div>
+              <div className="custom-image">
+                <img alt="example" width="100%" src="https://octodex.github.com/images/catstello.png" />
               </div>
-            </div>
-
-            <div
-              className="ui fluid row"
-              style={{
-                minHeight: "5vh",
-                backgroundColor: grey900,
-                color: "white",
-                minWidth: "100vw"
-              }}
-            >
-              <div className="ui horizontal container divider">
-                -
+              <div className="custom-card">
+                <p>{demo.description}</p>
+                <br/>
+                <Row>
+                  <Col span={11} offset={1}>
+                    <Button type="primary" style={{width:'100%'}}>Launch<Icon type="rocket" /></Button>
+                  </Col>
+                  <Col span={10} offset={1}>
+                    <Button type="primary" style={{width:'100%'}} onClick={() => this.handleShareModal(demo)}>Share<Icon type="share-alt" /></Button>
+                  </Col>
+                </Row>
+                <br/>
               </div>
-            </div>
-
-            <div
-              className="ui fluid row"
-              style={{
-                minHeight: "15vh",
-                backgroundColor: grey900,
-                color: "white",
-                minWidth: "100vw"
-              }}
-            >
-              Free Software (AGPL 3.0)
-              <br /><br />
-              Crafted with React, Redux, MaterialUI and &lt;3
-              <br /><br />
-              © CloudCV, 2016
-            </div>
-          </div>}
-
-        <Dialog
+            </Card>
+          </Col>))}
+          <br/>
+        </Row>}
+       <br/>
+      </div>}
+    </Content>
+    <Footer style={{ textAlign: 'center', background: '#fefefe', color:'#455A64', 'font-size' : '14px', 'box-shadow': '0px -2px 5px #E0E0E0'  }}>
+      Origami - Created by Team CloudCV
+    </Footer>
+    <Dialog
           title="Share This Demo"
           modal={false}
           open={this.state.shareModalOpen}
@@ -367,8 +239,9 @@ class ShareProfile extends React.Component {
           </div>
 
         </Dialog>
+  </Layout>
 
-      </div>
+
     );
   }
 }
